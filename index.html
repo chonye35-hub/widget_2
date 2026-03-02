@@ -9,8 +9,8 @@
 <style>
 body {
   margin: 0;
-  background: #ffffff; /* 완전 흰색 */
-  font-family: "Segoe UI", sans-serif;
+  background: #ffffff; /* 노션과 동일 */
+  font-family: 'Press Start 2P', monospace;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,10 +34,6 @@ body {
 
   border: 1px solid rgba(255,255,255,0.9);
 
-  box-shadow:
-    0 20px 40px rgba(183,201,226,0.25),
-    inset 0 3px 10px rgba(255,255,255,0.9);
-
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -45,7 +41,7 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
-/* 유광 */
+/* 유광 레이어 (그림자 없이 유지) */
 .card::after {
   content: "";
   position: absolute;
@@ -64,20 +60,17 @@ body {
 /* 제목 */
 h2 {
   margin: 0;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: normal;
   color: #5f6f86;
   letter-spacing: 1px;
 }
 
-/* 도트 숫자 */
+/* 숫자 */
 #result {
   margin-top: 24px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 22px;
+  font-size: 20px;
   color: #4f5d73;
-  text-shadow:
-    0 2px 6px rgba(255,255,255,0.8);
 }
 
 /* 버튼 */
@@ -89,19 +82,16 @@ button {
   background: rgba(255,255,255,0.9);
   color: #4f5d73;
   font-family: 'Press Start 2P', monospace;
-  font-size: 9px;
+  font-size: 8px;
   cursor: pointer;
   transition: 0.2s ease;
-  box-shadow:
-    0 5px 15px rgba(183,201,226,0.2),
-    inset 0 1px 3px rgba(255,255,255,0.9);
 }
 
 button:hover {
   transform: translateY(-2px);
 }
 
-/* 부유 */
+/* 부유 애니메이션 유지 */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
@@ -130,7 +120,6 @@ function getParams() {
 let { date, title } = getParams();
 document.getElementById("title").innerText = title;
 
-/* 🔥 모드 저장/불러오기 */
 let mode = localStorage.getItem("ddayMode") || "count";
 
 function calculate() {
@@ -165,7 +154,7 @@ function calculate() {
 
 function toggleMode() {
   mode = mode === "d" ? "count" : "d";
-  localStorage.setItem("ddayMode", mode); // 저장
+  localStorage.setItem("ddayMode", mode);
   calculate();
 }
 
