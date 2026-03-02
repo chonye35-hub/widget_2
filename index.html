@@ -136,7 +136,7 @@ function getParams() {
   const urlParams = new URLSearchParams(window.location.search);
   return {
     date: urlParams.get("date"),
-    mode: urlParams.get("mode") || "d",
+    mode: urlParams.get("mode") || "count",
     title: urlParams.get("title") || "D-Day"
   };
 }
