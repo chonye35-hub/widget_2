@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>D-Day Widget</title>
+<style>
+body {
+  margin: 0;
+  background: #111;
+  color: white;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+  background: #1e1e1e;
+  padding: 30px;
+  border-radius: 16px;
+  width: 260px;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+#result {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #D3C696;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2 id="title">D-Day</h2>
+  <div id="result">계산중...</div>
+  <button onclick="toggleMode()">모드 변경</button>
+</div>
+
+<script>
+function getParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return {
+    date: urlParams.get("date"),
+    mode: urlParams.get("mode") || "d",
+    title: urlParams.get("title") || "D-Day"
+  };
+}
+
+let { date, mode, title } = getParams();
+document.getElementById("title").innerText = title;
+
+function calculate() {
+  if (!date) return;
+
+  const today = new Date();
+  const target = new Date(
+    date.substring(0,4),
+    date.substring(4,6)-1,
+    date.substring(6,8)
+  );
+
+  const diffTime = target - today;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  let text;
+
+  if (mode === "d") {
+    if (diffDays > 0) text = `D-${diffDays}`;
+    else if (diffDays === 0) text = "D-Day";
+    else text = `D+${Math.abs(diffDays)}`;
+  } else {
+    const countDays = Math.floor((today - target) / (1000*60*60*24)) + 1;
+    text = `${countDays}일째`;
+  }
+
+  document.getElementById("result").innerText = text;
+}
+
+function toggleMode() {
+  mode = mode === "d" ? "count" : "d";
+  calculate();
+}
+
+calculate();
+</script>
+
+</body>
+</html>
