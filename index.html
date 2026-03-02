@@ -2,32 +2,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Aero D-Day</title>
+<title>Aero Dot D-Day</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
 body {
   margin: 0;
-  background: transparent;
-  font-family: "Segoe UI", "Nunito", sans-serif;
+  background: #ffffff; /* 완전 흰색 */
+  font-family: "Segoe UI", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* 🌫 공기 레이어 */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(242,198,207,0.25), transparent 55%),
-    radial-gradient(circle at 80% 70%, rgba(183,201,226,0.25), transparent 55%);
-  z-index: -2;
-}
-
-/* 💎 카드 */
+/* 카드 */
 .card {
   width: 260px;
   padding: 30px 20px;
@@ -35,18 +25,17 @@ body::before {
 
   background: linear-gradient(
     135deg,
-    rgba(242,198,207,0.55),
-    rgba(183,201,226,0.55)
+    rgba(242,198,207,0.45),
+    rgba(183,201,226,0.45)
   );
 
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
-  border: 1px solid rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.9);
 
   box-shadow:
-    0 25px 50px rgba(183,201,226,0.35),
-    0 0 80px rgba(242,198,207,0.15),
+    0 20px 40px rgba(183,201,226,0.25),
     inset 0 3px 10px rgba(255,255,255,0.9);
 
   text-align: center;
@@ -56,7 +45,7 @@ body::before {
   animation: float 6s ease-in-out infinite;
 }
 
-/* ✨ 상단 유광 */
+/* 유광 */
 .card::after {
   content: "";
   position: absolute;
@@ -66,55 +55,53 @@ body::before {
   height: 50%;
   background: linear-gradient(
     to bottom,
-    rgba(255,255,255,0.75),
+    rgba(255,255,255,0.7),
     transparent
   );
   border-radius: 32px 32px 60% 60%;
-  pointer-events: none;
 }
 
 /* 제목 */
 h2 {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: #5f6f86;
   letter-spacing: 1px;
 }
 
-/* 숫자 */
+/* 도트 숫자 */
 #result {
-  margin-top: 20px;
-  font-size: 34px;
-  font-weight: 600;
+  margin-top: 24px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 22px;
   color: #4f5d73;
   text-shadow:
-    0 2px 6px rgba(255,255,255,0.8),
-    0 0 20px rgba(183,201,226,0.4);
+    0 2px 6px rgba(255,255,255,0.8);
 }
 
 /* 버튼 */
 button {
-  margin-top: 22px;
-  padding: 6px 14px;
-  border-radius: 18px;
+  margin-top: 24px;
+  padding: 8px 12px;
+  border-radius: 16px;
   border: none;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.9);
   color: #4f5d73;
-  font-size: 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: 0.2s ease;
   box-shadow:
-    0 5px 15px rgba(183,201,226,0.3),
+    0 5px 15px rgba(183,201,226,0.2),
     inset 0 1px 3px rgba(255,255,255,0.9);
 }
 
 button:hover {
   transform: translateY(-2px);
-  background: rgba(255,255,255,0.95);
 }
 
-/* 🌊 부유 애니메이션 */
+/* 부유 */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
@@ -128,7 +115,7 @@ button:hover {
 <div class="card">
   <h2 id="title">D-Day</h2>
   <div id="result">계산중...</div>
-  <button onclick="toggleMode()">mode</button>
+  <button onclick="toggleMode()">MODE</button>
 </div>
 
 <script>
@@ -136,13 +123,15 @@ function getParams() {
   const urlParams = new URLSearchParams(window.location.search);
   return {
     date: urlParams.get("date"),
-    mode: urlParams.get("mode") || "count",
     title: urlParams.get("title") || "D-Day"
   };
 }
 
-let { date, mode, title } = getParams();
+let { date, title } = getParams();
 document.getElementById("title").innerText = title;
+
+/* 🔥 모드 저장/불러오기 */
+let mode = localStorage.getItem("ddayMode") || "count";
 
 function calculate() {
   if (!date) return;
@@ -164,11 +153,11 @@ function calculate() {
 
   if (mode === "d") {
     if (diffDays > 0) text = `D-${diffDays}`;
-    else if (diffDays === 0) text = "D-Day";
+    else if (diffDays === 0) text = "D-DAY";
     else text = `D+${Math.abs(diffDays)}`;
   } else {
     const countDays = Math.floor((today - target) / (1000*60*60*24)) + 1;
-    text = `${countDays}일째`;
+    text = `${countDays}DAY`;
   }
 
   document.getElementById("result").innerText = text;
@@ -176,6 +165,7 @@ function calculate() {
 
 function toggleMode() {
   mode = mode === "d" ? "count" : "d";
+  localStorage.setItem("ddayMode", mode); // 저장
   calculate();
 }
 
